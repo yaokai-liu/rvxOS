@@ -1,0 +1,11 @@
+*.iso
+isodir
+sysroot
+temp
+*.d
+*.o
+*.a
+*.elf
+*.bin
+*.kernel
+.idea

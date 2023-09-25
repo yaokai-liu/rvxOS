@@ -1,0 +1,3 @@
+[submodule "xdef"]
+	path = xdef
+	url = git@gitlab.com:yaokai-liu/xdef.git

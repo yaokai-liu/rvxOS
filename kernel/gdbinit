@@ -1,0 +1,14 @@
+
+file temp/os.symbol
+
+set disassemble-next-line on
+
+display/z $pc
+display/z $gp
+display/z $sp
+display/z $ra
+
+break _start
+target remote : 1234
+c
+
