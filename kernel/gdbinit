@@ -1,5 +1,5 @@
 
-file temp/os.symbol
+file ../temp/os.symbol
 
 set disassemble-next-line on
 

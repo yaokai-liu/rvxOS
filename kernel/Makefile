@@ -1,10 +1,17 @@
 include ../make.config
 
 KERNEL_ROOT = $(PROJECT_ROOT)/kernel
-KERNEL_DIR = $(KERNEL_ROOT)/kernel
-ARCH_DIR = $(KERNEL_ROOT)/arch/$(TARGET_PLATFORM)
+KERNEL_SRC_DIR = $(KERNEL_ROOT)/src
+BARBONS_DIR = $(KERNEL_SRC_DIR)/barbons
+ARCH_DIR = $(KERNEL_SRC_DIR)/arch/$(TARGET_PLATFORM)
+COMMON_DIR = $(KERNEL_SRC_DIR)/common
+SYS_DIR = $(KERNEL_SRC_DIR)/sys
 
-include $(ARCH_DIR)/make.config
+KERNEL_INCLUDE_DIR = $(KERNEL_ROOT)/include
+KERNEL_CCONFIG_DIR = $(KERNEL_ROOT)/cconfig
+
+
+include $(KERNEL_CCONFIG_DIR)/arch/riscv64.make.config
 
 ACFLAGS += $(KERNEL_ARCH_ACFLAGS)
 CCFLAGS += $(KERNEL_ARCH_CCFLAGS)
@@ -13,12 +20,15 @@ LDFLAGS += $(KERNEL_ARCH_LDFLAGS)
 
 DBINIT = gdbinit
 
-KERNEL_OBJS= $(KERNEL_ARCH_OBJS) $(KERNEL_DIR)/kernel.o $(ARCH_DIR)/tty.o
+KERNEL_ARCH_OBJS = $(ARCH_DIR)/crt1.o $(ARCH_DIR)/crti.o $(ARCH_DIR)/crtn.o
 
-OBJS =  $(ARCH_DIR)/crt1.o \
-	$(ARCH_DIR)/crti.o \
-	$(KERNEL_OBJS) \
-	$(ARCH_DIR)/crtn.o
+KERNEL_OBJS = $(KERNEL_ARCH_OBJS) $(BARBONS_DIR)/kernel.o $(BARBONS_DIR)/uart.o
+
+COMMON_OBJS = $(COMMON_DIR)/kprintf.o $(COMMON_DIR)/upper_c.o $(COMMON_DIR)/hex_digit.o
+
+SYS_OBJS = $(SYS_DIR)/power.o
+
+OBJS = $(KERNEL_OBJS) $(COMMON_OBJS) $(SYS_OBJS)
 
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S .x
@@ -30,7 +40,7 @@ debug: rvxOS.kernel
 	$(CROSS_COMPILE)-strip --strip-debug --strip-unneeded $(COMPILE_TEMP_DIR)/$<
 	$(CROSS_COMPILE)-objcopy --add-gnu-debuglink=$(COMPILE_TEMP_DIR)/os.symbol $(COMPILE_TEMP_DIR)/$<
 	nohup $(SYS_EMU) -nographic $(KERNEL_ARCH_EMUFLAGS) -D $(COMPILE_TEMP_DIR)/os-run.log \
-		-kernel $(COMPILE_TEMP_DIR)/$< -s -S > $(COMPILE_TEMP_DIR)/nohub.out &
+		-kernel $(COMPILE_TEMP_DIR)/$< -S -s > $(COMPILE_TEMP_DIR)/nohub.out &
 	$(ARCH_DB) $(COMPILE_TEMP_DIR)/$< -q -x $(DBINIT)
 
 demu: rvxOS.kernel
@@ -64,7 +74,7 @@ install: install-headers install-kernel
 
 install-headers:
 	mkdir -p $(USR_INCLUDE_DIR)
-	cp -R --preserve=timestamps $(KERNEL_ROOT)/include/. $(USR_INCLUDE_DIR)/.
+	cp -R --preserve=timestamps $(KERNEL_INCLUDE_DIR)/. $(USR_INCLUDE_DIR)/.
 
 install-kernel: rvxOS.kernel
 	mkdir -p $(SYS_BOOT_DIR)

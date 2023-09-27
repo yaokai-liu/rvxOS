@@ -1,12 +1,14 @@
 //
 // Project Name: rvxOS
-// Filename: strlen.c
+// Filename: kio.h
 // Creator: Yaokai Liu
 // Create Date: 2023-09-25
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
-#include <string.h>
 
-xSize strlen(const xuByte * _str) {
+#ifndef RVXOS_KIO_H
+#define RVXOS_KIO_H
 
-}
+void kprintf(const char * _format, ...);
+
+#endif //RVXOS_KIO_H
