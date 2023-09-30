@@ -41,60 +41,60 @@ void kvprintf(const char * _format, va_list _arg) {
                         uart_putchar('-');
                         n = ~n + 1;
                     }
-                    char buf[10]; // 32 bits int will not more than pow(10, 10).
+                    char buf[10] = {}; // 32 bits int will not more than pow(10, 10).
                     int i = 0;
                     for (; n > 0; i++, n /= 10) {
                         buf[i] = '0' + n % 10;
                     }
-                    for (; i > 0; i--) {
+                    for (i --; i >= 0; i--) {
                         uart_putchar(buf[i]);
                     }
                     break;
                 }
                 case 'u': {
                     unsigned int n = va_arg(_arg, unsigned int);
-                    char buf[10]; // 32 bits unsigned int will not more than pow(10, 10).
+                    char buf[10] = {}; // 32 bits unsigned int will not more than pow(10, 10).
                     int i = 0;
                     for (; n > 0; i++, n /= 10) {
                         buf[i] = '0' + n % 10;
                     }
-                    for (; i > 0; i--) {
+                    for (i --; i >= 0; i--) {
                         uart_putchar(buf[i]);
                     }
                     break;
                 }
                 case 'o': {
                     unsigned int n = va_arg(_arg, unsigned int);
-                    char buf[11]; // 32 bits int will not more than pow(10, 10).
+                    char buf[11] = {}; // 32 bits int will not more than pow(8, 11).
                     int i = 0;
                     for (; n > 0; i++, n /= 8) {
                         buf[i] = '0' + n % 8;
                     }
-                    for (; i > 0; i--) {
+                    for (i --; i >= 0; i--) {
                         uart_putchar(buf[i]);
                     }
                     break;
                 }
                 case 'x': {
                     unsigned int n = va_arg(_arg, unsigned int);
-                    char buf[8]; // 32 bits int will not more than pow(10, 10).
+                    char buf[8] = {}; // 32 bits int will not more than pow(16, 8).
                     int i = 0;
                     for (; n > 0; i++, n /= 16) {
                         buf[i] = hex_digit(n % 16);
                     }
-                    for (; i > 0; i--) {
+                    for (i --; i >= 0; i--) {
                         uart_putchar(buf[i]);
                     }
                     break;
                 }
                 case 'X': {
                     unsigned int n = va_arg(_arg, unsigned int);
-                    char buf[8]; // 32 bits int will not more than pow(10, 10).
+                    char buf[8] = {}; // 32 bits int will not more than pow(16, 8).
                     int i = 0;
                     for (; n > 0; i++, n /= 16) {
                         buf[i] = hex_digit(n % 16);
                     }
-                    for (; i > 0; i--) {
+                    for (i --; i >= 0; i--) {
                         char c = upper_c(buf[i]);
                         uart_putchar(c);
                     }
@@ -110,12 +110,12 @@ void kvprintf(const char * _format, va_list _arg) {
                 }
                 case 'p': {
                     size_t ptr = va_arg(_arg, size_t);
-                    char buf[8]; // 32 bits int will not more than pow(10, 10).
+                    char buf[16] = {}; // 32 bits int will not more than pow(16, 8).
                     int i = 0;
                     for (; ptr > 0; i++, ptr /= 16) {
                         buf[i] = hex_digit(ptr % 16);
                     }
-                    for (; i > 0; i--) {
+                    for (i --; i >= 0; i--) {
                         char c = upper_c(buf[i]);
                         uart_putchar(c);
                     }

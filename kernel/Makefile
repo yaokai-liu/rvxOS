@@ -22,7 +22,7 @@ DBINIT = gdbinit
 
 KERNEL_ARCH_OBJS = $(ARCH_DIR)/crt1.o $(ARCH_DIR)/crti.o $(ARCH_DIR)/crtn.o
 
-KERNEL_OBJS = $(KERNEL_ARCH_OBJS) $(BARBONS_DIR)/kernel.o $(BARBONS_DIR)/uart.o
+KERNEL_OBJS = $(KERNEL_ARCH_OBJS) $(BARBONS_DIR)/kernel.o $(BARBONS_DIR)/uart.o $(BARBONS_DIR)/misa.o
 
 COMMON_OBJS = $(COMMON_DIR)/kprintf.o $(COMMON_DIR)/upper_c.o $(COMMON_DIR)/hex_digit.o
 
