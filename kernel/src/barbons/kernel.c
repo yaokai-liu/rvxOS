@@ -1,17 +1,33 @@
 #include <sys/power.h>
 #include <kernel/uart.h>
 #include <common/kio.h>
+#include <kernel/csrr.h>
+#include <kernel/sbi.h>
 #define kernel_main _main
-#define read_misa   _read_misa
 
-long read_misa();
+static const char * PLATFORM_NAME   = "RISC-V";
+static const int PLATFORM_XLEN      = 64;
 
 void kernel_main(void) {
 	uart_initialize();
-    kprintf("Hello, %s world!\n", "RISC-V");
+    long misa = m_read_misa();
+    kprintf("System Platform: %s %d-bit\n", PLATFORM_NAME, PLATFORM_XLEN);
+    kprintf("Supported ISA Extensions: \n\t");
+    for (int i = 0; i < 26; i ++) {
+        if ((1 << i) & misa) {
+            kprintf("%c", i + 'A');
+        }
+    }
+    uart_putchar('\n');
+
     kprintf("Hello, %c-Mode!\n", 'M');
-    long misa = read_misa();
-    kprintf("MISA = 0x%X\n", misa);
+//    struct sbiret r = sbi_probe_extension(10086);
+//    if (r.error == SBI_SUCCESS) {
+//        kprintf("SBI Implication ID: %c%c%c\n",
+//                (r.value >> 16) % 256,
+//                (r.value >> 8) % 256,
+//                r.value % 256);
+//    }
     poweroff();
 }
 

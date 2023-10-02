@@ -5,7 +5,9 @@ KERNEL_SRC_DIR = $(KERNEL_ROOT)/src
 BARBONS_DIR = $(KERNEL_SRC_DIR)/barbons
 ARCH_DIR = $(KERNEL_SRC_DIR)/arch/$(TARGET_PLATFORM)
 COMMON_DIR = $(KERNEL_SRC_DIR)/common
+CSRR_DIR = $(KERNEL_SRC_DIR)/csrr
 SYS_DIR = $(KERNEL_SRC_DIR)/sys
+SBI_DIR = $(KERNEL_SRC_DIR)/rvx-sbi
 
 KERNEL_INCLUDE_DIR = $(KERNEL_ROOT)/include
 KERNEL_CCONFIG_DIR = $(KERNEL_ROOT)/cconfig
@@ -22,13 +24,21 @@ DBINIT = gdbinit
 
 KERNEL_ARCH_OBJS = $(ARCH_DIR)/crt1.o $(ARCH_DIR)/crti.o $(ARCH_DIR)/crtn.o
 
-KERNEL_OBJS = $(KERNEL_ARCH_OBJS) $(BARBONS_DIR)/kernel.o $(BARBONS_DIR)/uart.o $(BARBONS_DIR)/misa.o
+CSR_OBJS = $(CSRR_DIR)/minfo.o
+
+KERNEL_OBJS = $(KERNEL_ARCH_OBJS) $(BARBONS_DIR)/kernel.o $(BARBONS_DIR)/uart.o
 
 COMMON_OBJS = $(COMMON_DIR)/kprintf.o $(COMMON_DIR)/upper_c.o $(COMMON_DIR)/hex_digit.o
 
 SYS_OBJS = $(SYS_DIR)/power.o
 
-OBJS = $(KERNEL_OBJS) $(COMMON_OBJS) $(SYS_OBJS)
+SBI_OBJS = $(SBI_DIR)/ecall.o $(SBI_DIR)/base.o \
+		   $(SBI_DIR)/time.o $(SBI_DIR)/ipi.o \
+		   $(SBI_DIR)/rfence.o $(SBI_DIR)/hsm.o \
+		   $(SBI_DIR)/srst.o $(SBI_DIR)/pmu.o \
+		   $(SBI_DIR)/dbcn.o
+
+OBJS = $(KERNEL_OBJS) $(COMMON_OBJS) $(CSR_OBJS) $(SYS_OBJS) $(SBI_OBJS)
 
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S .x
@@ -67,6 +77,7 @@ rvxOS.kernel: $(OBJS) $(KERNEL_ROOT)/kernel.ld
 clean:
 	rm -f $(COMPILE_TEMP_DIR)/*
 	rm -f $(OBJS) *.o */*.o */*/*.o
+	rm -f $(OBJS) *.a */*.a */*/*.a
 	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
 
 
@@ -75,6 +86,7 @@ install: install-headers install-kernel
 install-headers:
 	mkdir -p $(USR_INCLUDE_DIR)
 	cp -R --preserve=timestamps $(KERNEL_INCLUDE_DIR)/. $(USR_INCLUDE_DIR)/.
+	cp -R --preserve=timestamps $(XDEF_DIR)/. $(USR_INCLUDE_DIR)/.
 
 install-kernel: rvxOS.kernel
 	mkdir -p $(SYS_BOOT_DIR)
