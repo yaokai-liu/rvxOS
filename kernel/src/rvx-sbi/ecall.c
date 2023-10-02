@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 #include <stdint.h>
 
 struct sbiret sbi_ecall(unsigned long arg0, unsigned long arg1,

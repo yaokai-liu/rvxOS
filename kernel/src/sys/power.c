@@ -7,7 +7,7 @@
 //
 
 #include <sys/power.h>
-#include <kernel/uart.h>
+#include <uart.h>
 #include <stdint.h>
 
 static uint32_t * const SYS_CON_ADDR = (uint32_t *)0x100000;

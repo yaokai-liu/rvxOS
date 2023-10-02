@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 
 union event_code {
     struct {

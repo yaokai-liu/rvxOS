@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 
 // Base Extension
 // EID: 0x10

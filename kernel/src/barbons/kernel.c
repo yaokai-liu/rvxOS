@@ -1,8 +1,8 @@
 #include <sys/power.h>
-#include <kernel/uart.h>
+#include <uart.h>
 #include <common/kio.h>
-#include <kernel/csrr.h>
-#include <kernel/sbi.h>
+#include <csrr.h>
+#include <sbi.h>
 #define kernel_main _main
 
 static const char * PLATFORM_NAME   = "RISC-V";

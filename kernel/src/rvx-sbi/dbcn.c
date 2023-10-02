@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 
 struct sbiret sbi_debug_console_write( unsigned long num_bytes,
         unsigned long base_addr_lo, unsigned long base_addr_hi)

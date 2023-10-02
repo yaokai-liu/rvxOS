@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 
 struct sbiret sbi_set_timer(uint64_t stime_value) {
     return sbi_ecall(stime_value, 0, 0, 0, 0, 0,

@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/uart.h>
+#include <uart.h>
 #include <common/charize.h>
 #include <stdarg.h>
 #include <stddef.h>

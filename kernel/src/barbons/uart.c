@@ -1,7 +1,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <kernel/uart.h>
+#include <uart.h>
 
 static unsigned char * const UART_ADDR = (unsigned char *)0x10000000;
 

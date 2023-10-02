@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 
 struct sbiret sbi_send_ipi(unsigned long hart_mask, unsigned long hart_mask_base) {
     return sbi_ecall(hart_mask, hart_mask_base, 0, 0, 0, 0,

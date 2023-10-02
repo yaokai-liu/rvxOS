@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/sbi.h>
+#include <sbi.h>
 
 struct sbiret sbi_system_reset(uint32_t reset_type, uint32_t reset_reason) {
     return sbi_ecall(reset_type, reset_reason, 0, 0, 0, 0,

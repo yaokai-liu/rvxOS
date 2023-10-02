@@ -6,7 +6,7 @@
 // Copyright (c) 2023 Yaokai Liu. All rights reserved.
 //
 
-#include <kernel/csrr.h>
+#include <csrr.h>
 
 #define __csrr(_csr) \
 inline long m_read_##_csr(void) {   \
