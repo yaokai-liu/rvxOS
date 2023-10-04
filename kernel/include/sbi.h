@@ -4,6 +4,11 @@
 // Creator: Yaokai Liu
 // Create Date: 2023-09-30
 //
+/*
+ * SBI implementation: LIU
+ * This SBI is implemented by Yaokai Liu with IMPL_ID = 0x4C4955 (LIU).
+ * Current implementation version is 0.0.1.
+ */
 
 #ifndef RVXOS_SBI_H
 #define RVXOS_SBI_H
@@ -444,23 +449,8 @@ struct sbiret sbi_steal_time_set_shmem(
 #define SBI_ERR_ALREADY_STOPPED       -8
 
 
-#define SBI_SPEC_VERSION_MAJOR_MASK	0x7f
-#define SBI_SPEC_VERSION_MINOR_MASK	0xffffff
-#define SBI_SPEC_VERSION_MASK	    0x7fffffff
-
-#define SBI_SPEC_VERSION_MAJOR         2
-#define SBI_SPEC_VERSION_MINOR         0
-
-// (0 << 31) & (SBI_SPEC_VERSION_MAJOR << 24) & (SBI_SPEC_VERSION_MINOR)
-#define SBI_SPEC_VERSION               0x02000000
-
-// ('L' << 16) & ('I' << 8) & ('U')
-#define SBI_IMPL_ID_LIU                0x4C4955
-
-#define SBI_IMPL_VERSION_MAJOR         0
-#define SBI_IMPL_VERSION_MINOR         1
-
-// (0 << 31) & (SBI_IMPL_VERSION_MAJOR << 24) & (SBI_IMPL_VERSION_MINOR)
-#define SBI_IMPL_VERSION               0x00000001
+#define SBI_VERSION_MAJOR_MASK	0x7f
+#define SBI_VERSION_MINOR_MASK	0xffffff
+#define SBI_VERSION_MASK	    0x7fffffff
 
 #endif //RVXOS_SBI_H
