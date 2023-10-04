@@ -38,6 +38,10 @@ enum sbi_eid {
     SBI_EXT_SRST = 0x53525354,
     SBI_EXT_PMU = 0x504D55,
     SBI_EXT_DBCN = 0x4442434E,
+    SBI_EXT_SUSP = 0x53555350,
+    SBI_EXT_CPPC = 0x43505043,
+    SBI_EXT_NACL = 0x4E41434C,
+    SBI_EXT_STA  = 0x535441,
 
     /* Experimental extensions must lie within this range */
     SBI_EXT_EXPERIMENTAL_START = 0x08000000,
@@ -333,7 +337,8 @@ struct sbiret sbi_pmu_snapshot_set_shmem(
         unsigned long flags
 );
 
-
+// Debug Console Extension
+// EID: 0x4442434E
 enum sbi_dbcn_fid {
     SBI_DBCN_WRITE = 0,
     SBI_DBCN_READ,
@@ -352,6 +357,82 @@ struct sbiret sbi_debug_console_read(
 struct sbiret sbi_debug_console_write_byte(uint8_t byte);
 
 
+// System Suspend Extension
+// EID: 0x53555350
+enum sbi_susp_fid {
+    SBI_SUSP_SYSTEM_SUSPEND = 0,
+};
+enum sbi_susp_sleep_type {
+    SBI_SUSP_SUSPEND_TO_RAM = 0,
+
+    /* reserved for future use */
+    SBI_SUSP_SLEEP_TYPE_RESERVED_START = 0x00000001,
+    SBI_SUSP_SLEEP_TYPE_RESERVED_END = 0x7FFFFFFF,
+
+    /* platform-specific system sleep types */
+    SBI_SUSP_SLEEP_TYPE_PLT_SPEC_START = 0x80000000,
+    SBI_SUSP_SLEEP_TYPE_PLT_SPEC_END = 0xFFFFFFFF,
+};
+struct sbiret sbi_system_suspend(
+        uint32_t sleep_type,
+        unsigned long resume_addr,
+        unsigned long opaque
+);
+
+
+// Collaborative Processor Performance Control (CPPC) Extension
+// EID: 0x43505043
+enum sbi_cppc_fid {
+    SBI_CPPC_PROBE = 0,
+    SBI_CPPC_READ,
+    SBI_CPPC_READ_HI,
+    SBI_CPPC_WRITE,
+};
+struct sbiret sbi_cppc_probe(uint32_t cppc_reg_id);
+struct sbiret sbi_cppc_read(uint32_t cppc_reg_id);
+struct sbiret sbi_cppc_read_hi(uint32_t cppc_reg_id);
+struct sbiret sbi_cppc_write(uint32_t cppc_reg_id, uint64_t val);
+
+
+// Nested Acceleration (NACL) Extension
+// EID: 0x4E41434C
+enum sbi_nacl_fid {
+    SBI_NACL_PROBE_FEATURE = 0,
+    SBI_NACL_SET_SHMEM,
+    SBI_NACL_SYNC_CSR,
+    SBI_NACL_SYNC_HFENCE,
+    SBI_NACL_SYNC_SRET
+};
+enum sbi_nacl_feature_type {
+    SBI_NACL_FEAT_SYNC_CSR = 0,
+    SBI_NACL_FEAT_SYNC_HFENCE,
+    SBI_NACL_FEAT_SYNC_SRET,
+    SBI_NACL_FEAT_AUTOSWAP_CSR,
+    SBI_NACL_RESERVED_FEATURE = 4,
+};
+struct sbiret sbi_nacl_probe_feature(uint32_t feature_id);
+struct sbiret sbi_nacl_set_shmem(
+        unsigned long shmem_phys_lo,
+        unsigned long shmem_phys_hi,
+        unsigned long flags
+);
+struct sbiret sbi_nacl_sync_csr(unsigned long csr_num);
+struct sbiret sbi_nacl_sync_hfence(unsigned long entry_index);
+struct sbiret sbi_nacl_sync_sret(void);
+
+// Steal-time Accounting (STA) Extension
+// EID: 0x535441
+enum sbi_sta_fid {
+    SBI_STA_SHMEM = 0,
+};
+struct sbiret sbi_steal_time_set_shmem(
+        unsigned long shmem_phys_lo,
+        unsigned long shmem_phys_hi,
+        unsigned long flags
+);
+
+
+
 #define SBI_SUCCESS                    0
 #define SBI_ERR_FAILED                -1
 #define SBI_ERR_NOT_SUPPORTED         -2
@@ -367,11 +448,11 @@ struct sbiret sbi_debug_console_write_byte(uint8_t byte);
 #define SBI_SPEC_VERSION_MINOR_MASK	0xffffff
 #define SBI_SPEC_VERSION_MASK	    0x7fffffff
 
-#define SBI_SPEC_VERSION_MAJOR         1
+#define SBI_SPEC_VERSION_MAJOR         2
 #define SBI_SPEC_VERSION_MINOR         0
 
 // (0 << 31) & (SBI_SPEC_VERSION_MAJOR << 24) & (SBI_SPEC_VERSION_MINOR)
-#define SBI_SPEC_VERSION               0x01000000
+#define SBI_SPEC_VERSION               0x02000000
 
 // ('L' << 16) & ('I' << 8) & ('U')
 #define SBI_IMPL_ID_LIU                0x4C4955

@@ -36,7 +36,9 @@ SBI_OBJS = $(SBI_DIR)/ecall.o $(SBI_DIR)/base.o \
 		   $(SBI_DIR)/time.o $(SBI_DIR)/ipi.o \
 		   $(SBI_DIR)/rfence.o $(SBI_DIR)/hsm.o \
 		   $(SBI_DIR)/srst.o $(SBI_DIR)/pmu.o \
-		   $(SBI_DIR)/dbcn.o
+		   $(SBI_DIR)/dbcn.o $(SBI_DIR)/susp.o \
+		   $(SBI_DIR)/cppc.o $(SBI_DIR)/nacl.o \
+		   $(SBI_DIR)/sta.o
 
 OBJS = $(KERNEL_OBJS) $(COMMON_OBJS) $(CSR_OBJS) $(SYS_OBJS) $(SBI_OBJS)
 
@@ -59,6 +61,8 @@ demu: rvxOS.kernel
 emu: rvxOS.kernel
 	$(SYS_EMU) $(KERNEL_ARCH_EMUFLAGS) -serial mon:stdio -kernel $(COMPILE_TEMP_DIR)/$<
 
+rvx-sbi: $(SBI_OBJS)
+	$(ARCH_LD) --relocatable --sysroot=$(SYSROOT) $(SBI_OBJS) -o $(COMPILE_TEMP_DIR)/$@.a
 
 rvxOS.kernel: $(OBJS) $(KERNEL_ROOT)/kernel.ld
 	mkdir -p $(COMPILE_TEMP_DIR)
