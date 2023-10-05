@@ -31,6 +31,8 @@ SECTIONS
 		PROVIDE(_bss_start = . );
 		*(COMMON)
 		*(.bss)
+		PROVIDE(_mscratch = .);
+		. += 4K;
 		. = ALIGN(0x1000);
 		PROVIDE( _global_pointer = . );
 		PROVIDE(_bss_end = . );

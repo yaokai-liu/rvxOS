@@ -8,6 +8,8 @@ COMMON_DIR = $(KERNEL_SRC_DIR)/common
 CSRR_DIR = $(KERNEL_SRC_DIR)/csrr
 SYS_DIR = $(KERNEL_SRC_DIR)/sys
 SBI_DIR = $(KERNEL_SRC_DIR)/rvx-sbi
+SEE_DIR = $(KERNEL_SRC_DIR)/rvx-see
+TRAP_DIR = $(KERNEL_SRC_DIR)/trap
 
 KERNEL_INCLUDE_DIR = $(KERNEL_ROOT)/include
 KERNEL_CCONFIG_DIR = $(KERNEL_ROOT)/cconfig
@@ -32,6 +34,8 @@ COMMON_OBJS = $(COMMON_DIR)/kprintf.o $(COMMON_DIR)/upper_c.o $(COMMON_DIR)/hex_
 
 SYS_OBJS = $(SYS_DIR)/power.o
 
+TRAP_OBJS = $(TRAP_DIR)/trap.o $(TRAP_DIR)/tvec.o
+
 SBI_OBJS = $(SBI_DIR)/ecall.o $(SBI_DIR)/base.o \
 		   $(SBI_DIR)/time.o $(SBI_DIR)/ipi.o \
 		   $(SBI_DIR)/rfence.o $(SBI_DIR)/hsm.o \
@@ -40,7 +44,12 @@ SBI_OBJS = $(SBI_DIR)/ecall.o $(SBI_DIR)/base.o \
 		   $(SBI_DIR)/cppc.o $(SBI_DIR)/nacl.o \
 		   $(SBI_DIR)/sta.o
 
-OBJS = $(KERNEL_OBJS) $(COMMON_OBJS) $(CSR_OBJS) $(SYS_OBJS) $(SBI_OBJS)
+SEE_OBJS = $(SEE_DIR)/base.o
+
+OBJS = $(KERNEL_OBJS) $(COMMON_OBJS)\
+ 	   $(CSR_OBJS) $(SYS_OBJS) \
+ 	   $(SBI_OBJS) $(SEE_OBJS) \
+ 	   $(TRAP_OBJS)
 
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S .x

@@ -1,7 +1,7 @@
 #include <sys/power.h>
 #include <uart.h>
 #include <common/kio.h>
-#include <csrr.h>
+#include <csrrw.h>
 #include <sbi.h>
 #define kernel_main _main
 
@@ -21,13 +21,13 @@ void kernel_main(void) {
     uart_putchar('\n');
 
     kprintf("Hello, %c-Mode!\n", 'M');
-//    struct sbiret r = sbi_probe_extension(10086);
-//    if (r.error == SBI_SUCCESS) {
-//        kprintf("SBI Implication ID: %c%c%c\n",
-//                (r.value >> 16) % 256,
-//                (r.value >> 8) % 256,
-//                r.value % 256);
-//    }
+    struct sbiret r = sbi_probe_extension(10086);
+    if (r.error == SBI_SUCCESS) {
+        kprintf("SBI Implication ID: %c%c%c\n",
+                (r.value >> 16) % 256,
+                (r.value >> 8) % 256,
+                r.value % 256);
+    }
     poweroff();
 }
 

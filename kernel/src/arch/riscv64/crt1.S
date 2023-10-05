@@ -40,9 +40,20 @@
 	mv		x31, zero
 
 _start:
-	# clear exception process
-	csrw    mscratch, zero
-	csrrw	zero, mtvec, zero
+	# trap init
+	la      t0, _mscratch
+	csrw    mscratch, t0
+	la      t0, _mtvec_
+	csrw	mtvec, t0
+
+    # set MPP = M-Mode, and enable MPIE
+	li      t0, (3 << 11 | 1 << 7)
+	csrr    a1, mstatus
+	or      t0, t0, a1
+	csrw    mstatus, t0
+	csrr    t1, mstatus
+
+
 
     # set the global_pointer
     .option push
