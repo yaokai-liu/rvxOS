@@ -34,7 +34,7 @@ COMMON_OBJS = $(COMMON_DIR)/kprintf.o $(COMMON_DIR)/upper_c.o $(COMMON_DIR)/hex_
 
 SYS_OBJS = $(SYS_DIR)/power.o
 
-TRAP_OBJS = $(TRAP_DIR)/trap.o $(TRAP_DIR)/tvec.o
+TRAP_OBJS = $(TRAP_DIR)/trap.o
 
 SBI_OBJS = $(SBI_DIR)/ecall.o $(SBI_DIR)/base.o \
 		   $(SBI_DIR)/time.o $(SBI_DIR)/ipi.o \

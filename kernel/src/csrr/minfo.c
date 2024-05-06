@@ -10,8 +10,8 @@
 
 #define __csrr(_csr) \
 inline long m_read_##_csr(void) {                   \
-    register long t0 __asm ("t0");                  \
-    __asm volatile ("csrr  t0, "#_csr : "+r" (t0));  \
+    register long t0 __asm__ ("t0");                  \
+    __asm__ volatile ("csrr  t0, "#_csr : "+r" (t0));  \
     return t0;                                      \
 }
 
@@ -44,8 +44,8 @@ __csrr(mscratch)
 
 #define __csrw(_csr) \
 inline long m_write_##_csr(void) {                          \
-    register long t0 __asm ("t0");                      \
-    __asm volatile ("csrw  "#_csr ", t0" : "+r" (t0));  \
+    register long t0 __asm__ ("t0");                      \
+    __asm__ volatile ("csrw  "#_csr ", t0" : "+r" (t0));  \
     return t0;                                          \
 }
 

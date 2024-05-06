@@ -27,6 +27,8 @@ void kernel_main(void) {
                 (r.value >> 16) % 256,
                 (r.value >> 8) % 256,
                 r.value % 256);
+    } else {
+        kprintf("Unsupported SBI Implementation: %d.", r.value);
     }
     poweroff();
 }

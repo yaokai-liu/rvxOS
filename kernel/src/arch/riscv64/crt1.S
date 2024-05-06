@@ -41,9 +41,9 @@
 
 _start:
 	# trap init
-	la      t0, _mscratch
+	la      t0, __mscratch_base
 	csrw    mscratch, t0
-	la      t0, _mtvec_
+	la      t0, __m_trap_handle
 	csrw	mtvec, t0
 
     # set MPP = M-Mode, and enable MPIE
@@ -70,9 +70,7 @@ _start:
 	# jump crt init
 	jal	    ra, __crt_init
 
-han:
-    # wfi
-    j       han
+    wfi
 	.cfi_endproc
 
 .section	.fini

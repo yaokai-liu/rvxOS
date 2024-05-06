@@ -7,10 +7,12 @@ display/z $pc
 display/z $gp
 display/z $sp
 display/z $ra
+display/z $mstatus
 display/z $mepc
 display/z $mcause
 
 break _start
 target remote : 1234
+b sbi_execute
 c
 

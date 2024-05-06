@@ -9,10 +9,12 @@
 #ifndef RVXOS_SEE_H
 #define RVXOS_SEE_H
 
-#define __m_sbi_cal
-#define __m_return  __asm volatile ("mret")
+#include <sbi.h>
 
-__m_sbi_cal void sbi_execute_environment(void);
+#define __m_sbi_cal
+#define __m_return  __asm__ volatile ("mret")
+
+__m_sbi_cal struct sbiret sbi_execute(void);
 
 static const char * SEE_EXCEPTION_CAUSES[];
 
